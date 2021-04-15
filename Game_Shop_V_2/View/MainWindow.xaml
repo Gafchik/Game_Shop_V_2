@@ -7,6 +7,36 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ListBox Grid.Column="0" ItemsSource="{Binding Games}" SelectedItem="{Binding Curent_game}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Path=Game_Name}" FontSize="15"></TextBlock>
+                        <TextBlock Text="{Binding Path=Mod_Game.Mod_Game_Name}" FontSize="13" ></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel HorizontalAlignment="Center" Grid.Column="1" DataContext="{Binding Curent_game}">
+          
+                <TextBlock Text="Выбранная Игра" FontSize="20"></TextBlock>
+            <TextBlock Text="Название" FontSize="15"></TextBlock>
+                <TextBlock  Text="{Binding Game_Name, UpdateSourceTrigger=PropertyChanged}" ></TextBlock>
+            <TextBlock FontSize="15" Text="Дата релиза"></TextBlock>
+                <TextBlock Text="{Binding  Game_Year_Releas, UpdateSourceTrigger=PropertyChanged}" ></TextBlock>
+                <TextBlock FontSize="15" Text="Количество продаж"></TextBlock>
+                <TextBlock Text="{Binding  Game_Count_Sell, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                <TextBlock FontSize="15" Text="Режим игры"></TextBlock>
+                <TextBlock Text="{Binding  Mod_Game.Mod_Game_Name, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                <TextBlock FontSize="15" Text="Студия"></TextBlock>
+            <TextBlock Text="{Binding  Studio.Studio_Name, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                <TextBlock FontSize="15" Text="Жанр"></TextBlock>
+            <TextBlock Text="{Binding  Style.Style_Game_Name, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+          
+        </StackPanel>
     </Grid>
 </Window>

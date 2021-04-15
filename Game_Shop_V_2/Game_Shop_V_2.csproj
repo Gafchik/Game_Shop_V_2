@@ -80,7 +80,6 @@
     <Compile Include="Model\Base\Mod_Game.cs" />
     <Compile Include="Model\Base\Studio.cs" />
     <Compile Include="Model\Base\Style.cs" />
-    <Compile Include="Model\Game_Model_Final.cs" />
     <Compile Include="ViewModel\ModelView.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

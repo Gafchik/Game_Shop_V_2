@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game_Shop_V_2.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace Game_Shop_V_2
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = new ModelView();
         }
     }
 }

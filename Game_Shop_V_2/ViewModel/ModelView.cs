@@ -12,24 +12,32 @@ namespace Game_Shop_V_2.ViewModel
 {
     public class ModelView : INotifyPropertyChanged
     {
-        public static DB_Game sourse;
-        public static ObservableCollection<Game> Games { get; set; }
+        public  DB_Game sourse { get; set; }
+        public  ObservableCollection<Game> Games { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         private Game curent_game;
-        static ModelView()
+        public ModelView()
         {
             sourse = new DB_Game();
-            Games = new ObservableCollection<Game>();
-            sourse.Games.ToList().ForEach(i => Games.Add(i));
+            Update_Games();
            // Games = sourse.Games;
         }
+
+      
 
         public Game Curent_game
         {
             get { return curent_game; }
-            set { curent_game = value; }
+            set { curent_game = value; OnPropertyChanged("Curent_game"); }
+        }
+        private void Update_Games()
+        {
+            if (Games != null)
+                Games.Clear();
+            Games = new ObservableCollection<Game>();
+            sourse.Games.ToList().ForEach(i => Games.Add(i));
         }
 
     }
