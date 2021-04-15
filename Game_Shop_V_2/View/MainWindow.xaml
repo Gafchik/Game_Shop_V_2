@@ -34,7 +34,27 @@
                 <TextBlock  FontWeight="Bold"   Background="Orange" FontSize="15" Text="Студия"></TextBlock>
             <TextBox IsEnabled="False" Text="{Binding  Studio.Studio_Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             <TextBlock  FontWeight="Bold"  Background="Orange" FontSize="15" Text="Жанр"></TextBlock>
-            <TextBox IsEnabled="False" Text="{Binding  Style.Style_Game_Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="addStyleButt" Background="Lime" Margin="0 0 30 0" Content="+" FontWeight="Bold" FontSize="15"/>
+                <ListView Grid.Column="1"  ItemsSource="{Binding Styles}" SelectedItem="{Binding Curent_style}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock  Text="{Binding Path=Style_Game_Name}" FontSize="15"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListView>
+            </Grid>
+            
+               
+                
+           
+                <!--<TextBox IsEnabled="False" Text="{Binding  Style.Style_Game_Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>-->
             <StackPanel Orientation="Horizontal">
             <CheckBox x:Name="checkEdit" FontWeight="Bold" Content="Редактирование" FontSize="15" />
                 <Button x:Name="saveButt" Margin="30 0 0 0" Content="Сохранить" FontWeight="Bold" FontSize="15"/>
