@@ -25,6 +25,31 @@ namespace Game_Shop_V_2
         {
             InitializeComponent();
             this.DataContext = new ModelView();
+            checkEdit.Checked += CheckEdit_Checked;
+            checkEdit.Unchecked += CheckEdit_Unchecked;
+            saveButt.Click += SaveButt_Click;
         }
+
+        private void SaveButt_Click(object sender, RoutedEventArgs e) => (DataContext as ModelView).Save();
+
+
+
+        private void CheckEdit_Unchecked(object sender, RoutedEventArgs e)
+        {
+            foreach (UIElement el in stack.Children)
+            {
+                if (el is TextBox)
+                    (el as TextBox).IsEnabled = false;
+            }
+        }
+
+        private void CheckEdit_Checked(object sender, RoutedEventArgs e)
+        {
+            foreach (UIElement el in stack.Children)
+            {
+                if (el is TextBox)
+                    (el as TextBox).IsEnabled = true;
+            }
+        }       
     }
 }
