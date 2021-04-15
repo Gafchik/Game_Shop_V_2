@@ -28,8 +28,10 @@ namespace Game_Shop_V_2
             checkEdit.Checked += CheckEdit_Checked;
             checkEdit.Unchecked += CheckEdit_Unchecked;
             saveButt.Click += SaveButt_Click;
+            dellButt.Click += DellButt_Click;
         }
 
+        private void DellButt_Click(object sender, RoutedEventArgs e) => (DataContext as ModelView).Dell();
         private void SaveButt_Click(object sender, RoutedEventArgs e) => (DataContext as ModelView).Save();
 
 
