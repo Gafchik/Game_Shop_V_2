@@ -11,7 +11,16 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" HorizontalAlignment="Stretch" ItemsSource="{Binding Games}" SelectedItem="{Binding Curent_game}">
+        <StackPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="Действия">
+                    <MenuItem  Header="Добавить новую игру" Click="add_Click" InputGestureText="Ctrl+A"  />
+                    <MenuItem Header="Удалить выбраную игру" Click="dell_Click" InputGestureText="Ctrl+D"/>
+                    <MenuItem Header="Обновить список" Click="refresh_Click_"  InputGestureText="Ctrl+O"/>
+                    <Separator />
+                </MenuItem>
+            </Menu>
+            <ListBox Grid.Column="0" HorizontalAlignment="Stretch" ItemsSource="{Binding Games}" SelectedItem="{Binding Curent_game}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -21,35 +30,51 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel x:Name="stack" HorizontalAlignment="Stretch" Grid.Column="1" DataContext="{Binding Curent_game}">
+        </StackPanel>
+        <StackPanel x:Name="stack" HorizontalAlignment="Stretch" Grid.Column="1" >
             <TextBlock  FontWeight="Bold"  Background="Red"  Text="Выбранная Игра" FontSize="20"></TextBlock>
             <TextBlock  FontWeight="Bold" Background="Orange"  Text="Название" FontSize="15"></TextBlock>
-                <TextBox IsEnabled="False"  Text="{Binding Game_Name, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+            <TextBox  IsEnabled="False"  Text="{Binding Curent_game.Game_Name, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
             <TextBlock  FontWeight="Bold"  Background="Orange" FontSize="15" Text="Дата релиза"></TextBlock>
-                <TextBox IsEnabled="False" Text="{Binding  Game_Year_Releas, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+            <TextBox IsEnabled="False" Text="{Binding  Curent_game.Game_Year_Releas, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
             <TextBlock  FontWeight="Bold"   Background="Orange" FontSize="15" Text="Количество продаж"></TextBlock>
-                <TextBox IsEnabled="False" Text="{Binding  Game_Count_Sell, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBox IsEnabled="False" Text="{Binding  Curent_game.Game_Count_Sell, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             <TextBlock  FontWeight="Bold"  Background="Orange" FontSize="15" Text="Режим игры"></TextBlock>
-                <TextBox IsEnabled="False" Text="{Binding  Mod_Game.Mod_Game_Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                <TextBlock  FontWeight="Bold"   Background="Orange" FontSize="15" Text="Студия"></TextBlock>
-            <TextBox IsEnabled="False" Text="{Binding  Studio.Studio_Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <ComboBox ItemsSource="{Binding Mod_s}" SelectedItem="{Binding Curent_game.Mod_Game}" 
+                       FontSize="20" Grid.Column="1" 
+                       Grid.Row="4" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock  Text="{Binding Path=Mod_Game_Name}" FontSize="15"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBlock  FontWeight="Bold"   Background="Orange" FontSize="15" Text="Студия"></TextBlock>
+            <ComboBox ItemsSource="{Binding Studios}" SelectedItem="{Binding Curent_game.Studio}"
+                       FontSize="20" Grid.Column="1" 
+                       Grid.Row="2" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock  Text="{Binding Path=Studio_Name}" FontSize="15"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <TextBlock  FontWeight="Bold"  Background="Orange" FontSize="15" Text="Жанр"></TextBlock>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Button x:Name="addStyleButt" Background="Lime" Margin="0 0 30 0" Content="+" FontWeight="Bold" FontSize="15"/>
-                <ListView Grid.Column="1"  ItemsSource="{Binding Styles}" SelectedItem="{Binding Curent_style}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <TextBlock  Text="{Binding Path=Style_Game_Name}" FontSize="15"></TextBlock>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListView>
-            </Grid>
+            <ComboBox  ItemsSource="{Binding Styles}" SelectedItem="{Binding  Curent_game.Style}"
+                       FontSize="20" Grid.Column="1" 
+                       Grid.Row="1" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock  Text="{Binding Path=Style_Game_Name}" FontSize="15"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             
                
                 

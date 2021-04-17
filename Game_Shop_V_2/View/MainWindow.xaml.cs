@@ -1,4 +1,5 @@
-﻿using Game_Shop_V_2.ViewModel;
+﻿using Game_Shop_V_2.View;
+using Game_Shop_V_2.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,8 @@ namespace Game_Shop_V_2
             {
                 if (el is TextBox)
                     (el as TextBox).IsEnabled = false;
+                if (el is ComboBox)
+                    (el as ComboBox).IsEnabled = false;
             }
         }
 
@@ -51,7 +54,19 @@ namespace Game_Shop_V_2
             {
                 if (el is TextBox)
                     (el as TextBox).IsEnabled = true;
+                if (el is ComboBox)
+                    (el as ComboBox).IsEnabled = true;
             }
-        }       
+        }
+
+        private void add_Click(object sender, RoutedEventArgs e) { new Window_Add_New().ShowDialog(); (DataContext as ModelView).Update_Games(); }
+
+
+        private void refresh_Click_(object sender, RoutedEventArgs e) => (DataContext as ModelView).Update_Games();
+
+
+
+        private void dell_Click(object sender, RoutedEventArgs e)  => (DataContext as ModelView).Dell();
+       
     }
 }

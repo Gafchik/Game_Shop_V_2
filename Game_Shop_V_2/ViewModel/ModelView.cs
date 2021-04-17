@@ -13,19 +13,35 @@ namespace Game_Shop_V_2.ViewModel
 {
     public class ModelView : INotifyPropertyChanged
     {
-        DB_Game sourse;
+       public DB_Game sourse;
         public  ObservableCollection<Game> Games { get; set; }
+
+
+        public  ObservableCollection<Studio> Studios { get; set; }
+
+
         public  ObservableCollection<Model.Base.Style> Styles { get; set; }
+
+
+        public  ObservableCollection<Mod_Game> Mod_s { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         public ModelView()
         {
             sourse = new DB_Game();
+            /*  Games = new ObservableCollection<Game>();
+              sourse.Games.ToList().ForEach(i => Games.Add(i));
+              Styles = new ObservableCollection<Model.Base.Style>();
+              sourse.Styles.ToList().ForEach(i => Styles.Add(i));
+              Studios = new ObservableCollection<Studio>();
+              sourse.Studios.ToList().ForEach(i => Studios.Add(i));*/
             Update_Games();
-           
+
+
         }
-     
+
 
         private Game curent_game;
         public Game Curent_game
@@ -33,6 +49,30 @@ namespace Game_Shop_V_2.ViewModel
             get { return curent_game; }
             set { curent_game = value; OnPropertyChanged("Curent_game"); }
         }
+        
+        
+        private Mod_Game curent_mod;
+        public Mod_Game Curent_mod
+        {
+            get { return curent_mod; }
+            set { curent_mod = value; OnPropertyChanged("Curent_game"); }
+        }
+
+
+
+
+
+        private Studio curent_studio;
+        public Studio Curent_studio
+        {
+            get { return curent_studio; }
+            set { curent_studio = value; OnPropertyChanged("Curent_game"); }
+        }
+
+
+
+
+
 
 
         private Model.Base.Style curent_style;
@@ -59,7 +99,7 @@ namespace Game_Shop_V_2.ViewModel
            
         }
 
-        private void Update_Games() // обновление  списка
+        public void Update_Games() // обновление  списка
         {
             if (Games == null)
                 Games = new ObservableCollection<Game>();
@@ -69,7 +109,15 @@ namespace Game_Shop_V_2.ViewModel
                 Styles = new ObservableCollection<Model.Base.Style>();
             Styles.Clear();
             sourse.Styles.ToList().ForEach(i => Styles.Add(i));
-           /* Curent_style = sourse.Styles.ToList().Find()*/
+            if (Studios == null)
+                Studios = new ObservableCollection<Studio>();
+            Studios.Clear();
+            sourse.Studios.ToList().ForEach(i => Studios.Add(i));
+            if (Mod_s == null)
+                Mod_s = new ObservableCollection<Mod_Game>();
+            Mod_s.Clear();
+            sourse.Mod_Game.ToList().ForEach(i => Mod_s.Add(i));
+         
         }
         internal  void Dell()
         {

@@ -1,0 +1,114 @@
+﻿<Window x:Class="Game_Shop_V_2.View.Window_Add_New"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Game_Shop_V_2.View"
+        mc:Ignorable="d"
+      Title="Добавление новой игры" Height="550" Width="800">
+    <StackPanel x:Name="Stack" Background="Gold">
+        <!--нижняя панель панель с  результатом-->
+        <Viewbox  Width="150">
+            <TextBlock   >Добавление :</TextBlock>
+        </Viewbox>
+        <Grid Margin="0 10 0 0" Background="Gold">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock FontSize="20"  Grid.Row="0" VerticalAlignment="Center"  HorizontalAlignment="Center" >Название :</TextBlock>
+            <TextBlock FontSize="20" Grid.Row="1" VerticalAlignment="Center"  HorizontalAlignment="Center">Стиль :</TextBlock>
+            <TextBlock FontSize="20" Grid.Row="2"  VerticalAlignment="Center"  HorizontalAlignment="Center">Студия :</TextBlock>
+            <TextBlock FontSize="20" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center">Год релиза :</TextBlock>
+            <TextBlock FontSize="20"  Grid.Row="4" VerticalAlignment="Center"  HorizontalAlignment="Center">Online mod :</TextBlock>
+            <TextBlock  FontSize="20" Grid.Row="5" VerticalAlignment="Center"  HorizontalAlignment="Center">Количество продаж :</TextBlock>
+
+            <StackPanel Orientation="Vertical"  Grid.Column="3"
+                       Grid.Row="1">
+                <TextBlock FontSize="20" Grid.Column="3"
+                       Grid.Row="1" >Новый стиль :</TextBlock>
+                <TextBox x:Name="TextBlock_New_Game_Stile" 
+                       FontSize="20" Grid.Column="3"                     
+                       Grid.Row="1" Margin="2 0 2 0" >
+                </TextBox>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical"  Grid.Column="3"
+                       Grid.Row="2">
+                <TextBlock FontSize="20" Grid.Column="3"
+                       Grid.Row="1" >Новая студия :</TextBlock>
+                <TextBox x:Name="TextBlock_New_Game_Studio" 
+                       FontSize="20" Grid.Column="3"                     
+                       Grid.Row="1" Margin="2 0 2 0" >
+                </TextBox>
+            </StackPanel>
+
+            <TextBox x:Name="TextBlock_Game_Name" 
+                       FontSize="20" Grid.Column="1"                     
+                       Grid.Row="0" >
+            </TextBox>
+            <ComboBox x:Name="ComboBox_Game_Style" ItemsSource="{Binding Styles}" SelectedItem="{Binding Curent_style}"
+                       FontSize="20" Grid.Column="1" 
+                       Grid.Row="1" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock  Text="{Binding Path=Style_Game_Name}" FontSize="15"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ComboBox x:Name="ComboBox_Game_Studio" ItemsSource="{Binding Studios}" SelectedItem="{Binding Curent_studio}"
+                       FontSize="20" Grid.Column="1" 
+                       Grid.Row="2" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock  Text="{Binding Path=Studio_Name}" FontSize="15"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Calendar x:Name="Calendar" 
+                      Grid.Column="1" 
+                       Grid.Row="3" >
+            </Calendar>
+            <ComboBox x:Name="ComboBox_Game_Mod"  ItemsSource="{Binding Mod_s}" SelectedItem="{Binding Curent_mod}" 
+                       FontSize="20" Grid.Column="1" 
+                       Grid.Row="4" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock  Text="{Binding Path=Mod_Game_Name}" FontSize="15"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBox x:Name="TextBlock_Game_Sells" 
+                       FontSize="20" Grid.Column="1" 
+                       Grid.Row="5" >
+            </TextBox>
+
+            <TextBlock FontSize="20" VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Grid.Row="6" >Редактирование :</TextBlock>
+            <Button Grid.Column="1"
+                    Name="Button_ADD"
+                    Margin="30,40,30,54"
+                    Grid.Row="6">
+                <TextBlock FontSize="20" Height="26">Добавить</TextBlock>
+            </Button>
+
+        </Grid>
+    </StackPanel>
+</Window>
