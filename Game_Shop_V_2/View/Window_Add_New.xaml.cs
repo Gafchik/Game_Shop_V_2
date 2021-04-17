@@ -30,6 +30,10 @@ namespace Game_Shop_V_2.View
 
         private void Button_ADD_Click(object sender, RoutedEventArgs e)
         {
+           // ComboBox_Game_Style
+//ComboBox_Game_Studio
+//ComboBox_Game_Mod
+
             var BD = (DataContext as ModelView);
            Game temp_Game = new Game();
             temp_Game.Game_Name = TextBlock_Game_Name.Text;
@@ -59,7 +63,15 @@ namespace Game_Shop_V_2.View
                 temp_Game.Game_Year_Releas = DateTime.Now;
             }
             temp_Game.Mod_Game = BD.Curent_mod;
-            temp_Game.Game_Count_Sell = Convert.ToInt32(TextBlock_Game_Sells.Text);
+            try { temp_Game.Game_Count_Sell = Convert.ToInt32(TextBlock_Game_Sells.Text); }
+           
+            catch (Exception)
+            {
+                temp_Game.Game_Count_Sell = 0;
+                MessageBox.Show("Не правильно введенное число\r\n значение установлено по умолчанию 0", "ОЙ", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+           
             if (BD.sourse.Games.ToList().Exists(i => i.Game_Name == temp_Game.Game_Name))
             {
                 GC.Collect(GC.GetGeneration(temp_Game));
@@ -68,8 +80,18 @@ namespace Game_Shop_V_2.View
             else
             {
                BD.sourse.Games.Add(temp_Game);
-               BD.sourse.SaveChanges();
-                MessageBox.Show("Информация успешно добавлена", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                try
+                { 
+                    BD.sourse.SaveChanges();
+                    MessageBox.Show("Информация успешно добавлена", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception)
+                {
+                   
+                    MessageBox.Show("Ты что-то сделал не правильно\r\n Дибил", "ОЙ", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                }
+               
             }          
          
             Close();
