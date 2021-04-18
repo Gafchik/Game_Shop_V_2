@@ -80,14 +80,11 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            
-               
-                
-           
-                <!--<TextBox IsEnabled="False" Text="{Binding  Style.Style_Game_Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>-->
+                                                   
+              
             <StackPanel Orientation="Horizontal">
             <CheckBox x:Name="checkEdit" FontWeight="Bold" Content="Редактирование" FontSize="15" />
-                <Button x:Name="saveButt" Margin="30 0 0 0" Content="Сохранить" FontWeight="Bold" FontSize="15"/>
+                <Button Command="{Binding Save_comand}" x:Name="saveButt" Margin="30 0 0 0" Content="Сохранить" FontWeight="Bold" FontSize="15"/>
                 <Button x:Name="dellButt" Margin="30 0 0 0" Content="Удалить" FontWeight="Bold" FontSize="15"/>
             </StackPanel>
         </StackPanel>
