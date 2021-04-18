@@ -5,16 +5,19 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Game_Shop_V_2.View.ViewModel;
+using System.Data.SqlClient;
+using System.Data;
+using Dapper;
+using System.Configuration;
+using Game_Shop_V_2.View;
 
 namespace Game_Shop_V_2.ViewModel
 {
     public class ModelView : INotifyPropertyChanged
     {
-        public DB_Game sourse;
+       
         public ObservableCollection<Game> Games { get; set; }
 
 
@@ -31,16 +34,43 @@ namespace Game_Shop_V_2.ViewModel
            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         public ModelView()
         {
-            sourse = new DB_Game();
-            /*  Games = new ObservableCollection<Game>();
-              sourse.Games.ToList().ForEach(i => Games.Add(i));
-              Styles = new ObservableCollection<Model.Base.Style>();
-              sourse.Styles.ToList().ForEach(i => Styles.Add(i));
-              Studios = new ObservableCollection<Studio>();
-              sourse.Studios.ToList().ForEach(i => Studios.Add(i));*/
-            Update_Games();
+            InitializeComponent();
+        }
 
+        public void InitializeComponent()
+        {
+            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_Game"].ConnectionString))
+            {
+                if (Studios != null)
+                    Studios.Clear();
+                Studios = new ObservableCollection<Studio>(db.Query<Studio>("SELECT * FROM [Studio]").ToList());
+                if (Styles != null)
+                    Styles.Clear();
+                Styles = new ObservableCollection<Model.Base.Style>(db.Query<Model.Base.Style>("SELECT * FROM [Style]").ToList());
+                if (Mod_s != null)
+                    Mod_s.Clear();
+                Mod_s = new ObservableCollection<Mod_Game>(db.Query<Mod_Game>("SELECT * FROM [Mod_Game]").ToList());
+                if (Games != null)
+                    Games.Clear();
+                Games = new ObservableCollection<Game>(db.Query<Game>("SELECT * FROM [Game]").ToList());
+                Games.ToList().ForEach(i => i.Studio = Studios.ToList().Find(j => j.Id == i.Game_Studio_id));
+                Games.ToList().ForEach(i => i.Style = Styles.ToList().Find(j => j.Id == i.Game_Style_id));
+                Games.ToList().ForEach(i => i.Mod_Game = Mod_s.ToList().Find(j => j.Id == i.Game_Mod_id));
+                OnPropertyChanged("Games");
+            }
+        }
 
+        internal void ADD()
+        {
+            new Window_Add_New().ShowDialog();
+            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_Game"].ConnectionString))
+            {
+                Games = new ObservableCollection<Game>(db.Query<Game>("SELECT * FROM [Game]").ToList());
+                Games.ToList().ForEach(i => i.Studio = Studios.ToList().Find(j => j.Id == i.Game_Studio_id));
+                Games.ToList().ForEach(i => i.Style = Styles.ToList().Find(j => j.Id == i.Game_Style_id));
+                Games.ToList().ForEach(i => i.Mod_Game = Mod_s.ToList().Find(j => j.Id == i.Game_Mod_id));
+                OnPropertyChanged("Games");
+            }
         }
 
         private RelayCommand serch_comand;
@@ -59,17 +89,26 @@ namespace Game_Shop_V_2.ViewModel
             }
         }
 
-       IEnumerable<Game> Find(Func<Game, bool> filter) => sourse.Games.ToList().Where(filter).ToList();
-       
-
+       IEnumerable<Game> Find(Func<Game, bool> filter) =>  Games.ToList().Where(filter).ToList();
 
         private string serch_srt;
 
         public string Serch_srt
         {
             get { return serch_srt; }
-            set { serch_srt = value; OnPropertyChanged("Serch_srt"); Games = new ObservableCollection<Game>(Find(i => i.Game_Name.ToLower().Contains(Serch_srt.ToLower())));
-                OnPropertyChanged("Games"); 
+            set 
+            { 
+                serch_srt = value; OnPropertyChanged("Serch_srt");               
+                    using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_Game"].ConnectionString))
+                    {
+                        Games = new ObservableCollection<Game>(db.Query<Game>("SELECT * FROM [Game]").ToList());
+                        Games.ToList().ForEach(i => i.Studio = Studios.ToList().Find(j => j.Id == i.Game_Studio_id));
+                        Games.ToList().ForEach(i => i.Style = Styles.ToList().Find(j => j.Id == i.Game_Style_id));
+                        Games.ToList().ForEach(i => i.Mod_Game = Mod_s.ToList().Find(j => j.Id == i.Game_Mod_id));
+                    }
+                    Games = new ObservableCollection<Game>(Find(i => i.Game_Name.ToLower().Contains(Serch_srt.ToLower())));
+                    OnPropertyChanged("Games");
+                
             }
         }
 
@@ -115,57 +154,98 @@ namespace Game_Shop_V_2.ViewModel
             set { curent_style = value; OnPropertyChanged("Curent_style"); }
         }
 
+
+
         internal void Save() // сохранение изминений
         {
             if (MessageBox.Show("Сохранить изминения?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
                 return;
             else
             {
-                if (sourse.Games.ToList().Exists(i => i.Id == Curent_game.Id))
+                if (Games.ToList().Exists(i => i.Id == Curent_game.Id))
                 {
-                    sourse.SaveChanges();
-                    Update_Games();
+                    using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_Game"].ConnectionString))
+                    {
+                        db.Open();
+                        using (var transaction = db.BeginTransaction())
+                        {
+                            try
+                            {
+
+                                db.Execute("UPDATE [Game] SET Game_Name = @Game_Name," + "Game_Studio_id = @Game_Studio_id," +
+                                            "Game_Style_id = @Game_Style_id," + "Game_Year_Releas = @Game_Year_Releas," +
+                                            "Game_Mod_id = @Game_Mod_id," + "Game_Count_Sell = @Game_Count_Sell " +
+                                              "WHERE Id = @Id",
+                                    new
+                                    {
+                                        Id = Curent_game.Id,
+                                        Game_Name = Curent_game.Game_Name,
+                                        Game_Studio_id = Curent_game.Studio.Id,
+                                        Game_Style_id = Curent_game.Style.Id,
+                                        Game_Year_Releas = Curent_game.Game_Year_Releas,
+                                        Game_Mod_id = Curent_game.Mod_Game.Id,
+                                        Game_Count_Sell = Curent_game.Game_Count_Sell
+                                    }, transaction);
+                                transaction.Commit();
+                            }
+                            catch (System.Exception ex)
+                            {
+                                transaction.Rollback();
+                                throw ex;
+                            }
+                        }
+                        Games = new ObservableCollection<Game>(db.Query<Game>("SELECT * FROM [Game]").ToList());
+                        Games.ToList().ForEach(i => i.Studio = Studios.ToList().Find(j => j.Id == i.Game_Studio_id));
+                        Games.ToList().ForEach(i => i.Style = Styles.ToList().Find(j => j.Id == i.Game_Style_id));
+                        Games.ToList().ForEach(i => i.Mod_Game = Mod_s.ToList().Find(j => j.Id == i.Game_Mod_id));
+                        OnPropertyChanged("Games");
+                    }
+
                 }
                 else
                     MessageBox.Show("Что-то пошло нет так", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
+           
 
-        public void Update_Games() // обновление  списка
-        {
-            if (Games == null)
-                Games = new ObservableCollection<Game>();
-            Games.Clear();
-            sourse.Games.ToList().ForEach(i => Games.Add(i));
-            if (Styles == null)
-                Styles = new ObservableCollection<Model.Base.Style>();
-            Styles.Clear();
-            sourse.Styles.ToList().ForEach(i => Styles.Add(i));
-            if (Studios == null)
-                Studios = new ObservableCollection<Studio>();
-            Studios.Clear();
-            sourse.Studios.ToList().ForEach(i => Studios.Add(i));
-            if (Mod_s == null)
-                Mod_s = new ObservableCollection<Mod_Game>();
-            Mod_s.Clear();
-            sourse.Mod_Game.ToList().ForEach(i => Mod_s.Add(i));
-
-        }
+       
         internal void Dell()
         {
             if (MessageBox.Show("Удалить игру?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
                 return;
             else
             {
-                if (sourse.Games.ToList().Exists(i => i.Id == Curent_game.Id))
+                if ( Games.ToList().Exists(i => i.Id == Curent_game.Id))
                 {
-                    sourse.Games.Remove(sourse.Games.ToList().Find(i => i.Id == Curent_game.Id));
-                    sourse.SaveChanges();
-                    Update_Games();
+                    using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_Game"].ConnectionString))
+                    {
+                        db.Open();
+                        using (var transaction = db.BeginTransaction())
+                        {
+                            try
+                            {
+                                db.Execute(" DELETE FROM [Game] WHERE Id = @Id",
+                                    new { Id = Curent_game.Id }, transaction); 
+                                transaction.Commit();
+                            }
+                            catch (System.Exception ex)
+                            {
+                                transaction.Rollback();
+                                throw ex;
+                            }
+                        }
+                    }
                 }
                 else
                     MessageBox.Show("Что-то пошло нет так", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_Game"].ConnectionString))
+            {
+                Games = new ObservableCollection<Game>(db.Query<Game>("SELECT * FROM [Game]").ToList());
+                Games.ToList().ForEach(i => i.Studio = Studios.ToList().Find(j => j.Id == i.Game_Studio_id));
+                Games.ToList().ForEach(i => i.Style = Styles.ToList().Find(j => j.Id == i.Game_Style_id));
+                Games.ToList().ForEach(i => i.Mod_Game = Mod_s.ToList().Find(j => j.Id == i.Game_Mod_id));
+                OnPropertyChanged("Games");
             }
         }
     }
