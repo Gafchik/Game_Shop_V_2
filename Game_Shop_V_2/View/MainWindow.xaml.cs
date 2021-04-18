@@ -58,13 +58,8 @@ namespace Game_Shop_V_2
                     (el as ComboBox).IsEnabled = true;
             }
         }
-
-        private void add_Click(object sender, RoutedEventArgs e) { new Window_Add_New().ShowDialog(); (DataContext as ModelView).Update_Games(); }
-
-
-        private void refresh_Click_(object sender, RoutedEventArgs e) => (DataContext as ModelView).Update_Games();
-
-
+       
+        private void add_Click(object sender, RoutedEventArgs e) => (DataContext as ModelView).ADD();     
 
         private void dell_Click(object sender, RoutedEventArgs e)  => (DataContext as ModelView).Dell();
        
