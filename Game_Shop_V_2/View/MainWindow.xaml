@@ -16,12 +16,10 @@
                 <MenuItem Header="Действия">
                     <MenuItem  Header="Добавить новую игру"  Click="add_Click" InputGestureText="Ctrl+A"  />
                     <MenuItem Header="Удалить выбраную игру" Click="dell_Click" InputGestureText="Ctrl+D"/>
-                    <MenuItem Header="Обновить список" Click="refresh_Click_"  InputGestureText="Ctrl+O"/>
-                    <Separator />
                 </MenuItem>
             </Menu>
             <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="serch_box" Text="{Binding Serch_srt}"  Width="200"   FontSize="15" />
+                <TextBox x:Name="serch_box" Text="{Binding Serch_srt, UpdateSourceTrigger=PropertyChanged}"  Width="200"   FontSize="15" />
                 <Button Command="{Binding Serch_comand}"
                     CommandParameter="{Binding Serch_srt}"
                     Content="Поиск" HorizontalAlignment="Right" Margin="10 0 0 0" />
