@@ -14,8 +14,8 @@
         <StackPanel Background="Orange">
             <Menu DockPanel.Dock="Top" >
                 <MenuItem Header="Действия">
-                    <MenuItem  Header="Добавить новую игру"  Click="add_Click" InputGestureText="Ctrl+A"  />
-                    <MenuItem Header="Удалить выбраную игру" Click="dell_Click" InputGestureText="Ctrl+D"/>
+                    <MenuItem  Header="Добавить новую игру"  Command="{Binding Add}"  />
+                    <MenuItem Header="Удалить выбраную игру" Command="{Binding Dell}"/>
                 </MenuItem>
             </Menu>
             <StackPanel Orientation="Horizontal">
@@ -85,7 +85,7 @@
             <StackPanel Orientation="Horizontal">
             <CheckBox x:Name="checkEdit" FontWeight="Bold" Content="Редактирование" FontSize="15" />
                 <Button Command="{Binding Save_comand}" x:Name="saveButt" Margin="30 0 0 0" Content="Сохранить" FontWeight="Bold" FontSize="15"/>
-                <Button x:Name="dellButt" Margin="30 0 0 0" Content="Удалить" FontWeight="Bold" FontSize="15"/>
+                <Button x:Name="dellButt" Margin="30 0 0 0" Content="Удалить" Command="{Binding Dell}"/>
             </StackPanel>
         </StackPanel>
     </Grid>
