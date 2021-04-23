@@ -56,11 +56,7 @@ namespace Game_Shop_V_2
                 if (el is ComboBox)
                     (el as ComboBox).IsEnabled = true;
             }
-        }
-       
-        private void add_Click(object sender, RoutedEventArgs e) => (DataContext as ModelView).ADD();     
-
-        private void dell_Click(object sender, RoutedEventArgs e)  => (DataContext as ModelView).Dell();
+        }             
        
     }
 }

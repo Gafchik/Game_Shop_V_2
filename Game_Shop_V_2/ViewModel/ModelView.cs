@@ -54,9 +54,29 @@ namespace Game_Shop_V_2.ViewModel
                 Games.ToList().ForEach(i => i.Mod_Game = Mod_s.ToList().Find(j => j.Id == i.Game_Mod_id));
                 OnPropertyChanged("Games");
             }
-        }      
+        }
+        private Studio curent_studio;
+        public Studio Curent_studio
+        {
+            get { return curent_studio; }
+            set { curent_studio = value; OnPropertyChanged("Curent_studio"); }
+        }
 
-      
+        private Model.Base.Style curent_style;
+        public Model.Base.Style Curent_style
+        {
+            get { return curent_style; }
+            set { curent_style = value; OnPropertyChanged("Curent_style"); }
+        }
+
+        private Mod_Game curent_mod;
+        public Mod_Game Curent_mod
+        {
+            get { return curent_mod; }
+            set { curent_mod = value; OnPropertyChanged("Curent_mod"); }
+        }
+        
+
 
         #region serch_srt
         private string serch_srt;
